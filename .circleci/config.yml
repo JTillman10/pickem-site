@@ -52,7 +52,7 @@ jobs:
             - .firebaserc
   deploy:
     docker:
-      - image: 'circleci/node:8'
+      - image: 'circleci/node:10'
     working_directory: ~/project
     steps:
       - run:
