@@ -1,10 +1,20 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@Angular/common/http';
 
 @Component({
-  selector: 'app-root',
+  selector: 'root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'pickem-site';
+  title = 'nw-pickem-site';
+
+  constructor(private http: HttpClient) {
+    http
+      .post('/api/auth/login', {
+        email: 'osubucks13@gmail.com',
+        password: 'password'
+      })
+      .subscribe();
+  }
 }
