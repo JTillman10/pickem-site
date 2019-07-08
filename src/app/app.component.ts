@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'root',
@@ -9,12 +8,5 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent {
   title = 'nw-pickem-site';
 
-  constructor(private http: HttpClient) {
-    http
-      .post('/api/auth/login', {
-        email: 'osubucks13@gmail.com',
-        password: 'password'
-      })
-      .subscribe();
-  }
+  constructor() {}
 }

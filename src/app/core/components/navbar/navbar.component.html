@@ -1,0 +1,27 @@
+<nav class="navbar is-link" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <span class="navbar-item is-size-5 has-text-weight-semibold">Pickem</span>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item">
+          Home
+        </a>
+      </div>
+      <div class="navbar-end">
+        <span id="welcome-message" class="navbar-item is-size-6" *ngIf="name">
+          Welcome, {{ name }}
+        </span>
+        <div class="navbar-item">
+          <div class="buttons">
+            <a id="logout-button" class="button is-light" *ngIf="loggedIn" (click)="logOut()">
+              <fa-icon [icon]="faSignOutAlt"></fa-icon>
+              Log out
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

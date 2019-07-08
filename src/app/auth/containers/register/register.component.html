@@ -1,0 +1,8 @@
+<auth-form [type]="'registering'" (submitted)="registerUser($event)">
+  <span class="auth-form-title">Register</span>
+  <a routerLink="/auth/login">Already have an account?</a>
+  <span class="auth-form-button">Register</span>
+  <p class="error subtitle has-text-danger has-text-centered" *ngIf="error">
+    {{ error }}
+  </p>
+</auth-form>
