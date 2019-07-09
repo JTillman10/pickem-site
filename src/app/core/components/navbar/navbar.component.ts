@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Router } from '@angular/router';
 
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
   faSignOutAlt = faSignOutAlt;
+  faUser = faUser;
 
   constructor(private authService: AuthService, private router: Router) {}
 

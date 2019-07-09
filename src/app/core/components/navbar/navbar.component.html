@@ -1,4 +1,4 @@
-<nav class="navbar is-link" role="navigation" aria-label="main navigation">
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation" *ngIf="loggedIn">
   <div class="container">
     <div class="navbar-brand">
       <span class="navbar-item is-size-5 has-text-weight-semibold">Pickem</span>
@@ -10,14 +10,18 @@
         </a>
       </div>
       <div class="navbar-end">
-        <span id="welcome-message" class="navbar-item is-size-6" *ngIf="name">
-          Welcome, {{ name }}
-        </span>
-        <div class="navbar-item">
-          <div class="buttons">
-            <a id="logout-button" class="button is-light" *ngIf="loggedIn" (click)="logOut()">
-              <fa-icon [icon]="faSignOutAlt"></fa-icon>
-              Log out
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            <fa-icon [icon]="faUser"></fa-icon>
+          </a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item">
+              My Profile
+            </a>
+            <hr class="navbar-divider" />
+            <a class="navbar-item" (click)="logOut()">
+              <span><fa-icon [icon]="faSignOutAlt"></fa-icon></span>
+              <span>Log out</span>
             </a>
           </div>
         </div>
