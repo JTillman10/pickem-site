@@ -69,6 +69,10 @@ export class AuthService {
     return null;
   }
 
+  get userId(): number {
+    return parseInt(localStorage.getItem('user_id'), 10);
+  }
+
   private setSession(jwtResponse: JwtResponse) {
     const expiresAt = new Date();
     expiresAt.setSeconds(expiresAt.getSeconds() + jwtResponse.expiresIn);
