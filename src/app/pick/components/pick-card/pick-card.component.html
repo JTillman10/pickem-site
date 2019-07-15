@@ -6,8 +6,11 @@
           <div>{{ game.get('date').value | date: 'short' }}</div>
         </div>
       </div>
+      <div class="column has-text-right" *ngIf="locked">
+        <span class="tag"><fa-icon [icon]="faLock"></fa-icon>Locked</span>
+      </div>
     </div>
-    <div class="columns is-mobile is-vcentered is-multiline">
+    <div class="columns is-mobile is-marginless is-vcentered is-multiline">
       <div class="column is-6">
         <div class="field">
           <div class="control">
@@ -24,11 +27,13 @@
         <div class="field is-pulled-right">
           <div class="control">
             <label
-              class="button"
+              class="button is-info"
               [for]="game.get('id').value + 'line-away-winner-radio'"
-              [ngClass]="
-                lineWinner === 'AWAY' ? 'has-background-primary' : 'has-background-grey-lighter'
-              "
+              [ngClass]="{
+                'is-info': !locked,
+                'is-static': locked,
+                'is-outlined': lineWinner !== 'AWAY'
+              }"
             >
               <input
                 [id]="game.get('id').value + 'line-away-winner-radio'"
@@ -37,29 +42,20 @@
                 value="AWAY"
                 name="lineWinner"
               />
-              {{
-                game
-                  .get('line')
-                  .value.toString()
-                  .charCodeAt(0) === 45
-                  ? '+' +
-                    game
-                      .get('line')
-                      .value.toString()
-                      .slice(1)
-                  : '-' + game.get('line').value
-              }}
+              {{ game.get('line').value.toString() | line: false }}
             </label>
           </div>
         </div>
         <div class="field is-pulled-right">
           <div class="control">
             <label
-              class="button"
+              class="button is-info"
               [for]="game.get('id').value + 'line-home-winner-radio'"
-              [ngClass]="
-                lineWinner === 'HOME' ? 'has-background-primary' : 'has-background-grey-lighter'
-              "
+              [ngClass]="{
+                'is-info': !locked,
+                'is-static': locked,
+                'is-outlined': lineWinner !== 'HOME'
+              }"
             >
               <input
                 [id]="game.get('id').value + 'line-home-winner-radio'"
@@ -68,14 +64,7 @@
                 value="HOME"
                 name="lineWinner"
               />
-              {{
-                game
-                  .get('line')
-                  .value.toString()
-                  .charCodeAt(0) === 45
-                  ? game.get('line').value
-                  : '+' + game.get('line').value
-              }}
+              {{ game.get('line').value.toString() | line: true }}
             </label>
           </div>
         </div>
@@ -83,176 +72,57 @@
       <div class="column is-full has-text-centered">
         <div class="field">
           <div class="control">
-            <label
-              class="button"
-              [for]="game.get('id').value + 'over-winner-radio'"
-              [ngClass]="
-                overunderWinner === 'OVER'
-                  ? 'has-background-primary'
-                  : 'has-background-grey-lighter'
-              "
-            >
-              <input
-                [id]="game.get('id').value + 'over-winner-radio'"
-                type="radio"
-                formControlName="overunderWinner"
-                value="OVER"
-                name="overunderWinner"
-              />
-              Over {{ game.get('overunder').value }}
-            </label>
-            <label
-              class="button is-pulled-right"
-              [for]="game.get('id').value + 'under-winner-radio'"
-              [ngClass]="
-                overunderWinner === 'UNDER'
-                  ? 'has-background-primary'
-                  : 'has-background-grey-lighter'
-              "
-            >
-              <input
-                [id]="game.get('id').value + 'under-winner-radio'"
-                type="radio"
-                formControlName="overunderWinner"
-                value="UNDER"
-                name="overunderWinner"
-              />
-              Under {{ game.get('overunder').value }}
-            </label>
+            <div class="columns is-vcentered is-mobile">
+              <div class="column">
+                <label
+                  class="button is-info"
+                  [for]="game.get('id').value + 'over-winner-radio'"
+                  [ngClass]="{
+                    'is-info': !locked,
+                    'is-static': locked,
+                    'is-outlined': overunderWinner !== 'OVER'
+                  }"
+                >
+                  <input
+                    [id]="game.get('id').value + 'over-winner-radio'"
+                    type="radio"
+                    formControlName="overunderWinner"
+                    value="OVER"
+                    name="overunderWinner"
+                  />
+                  Over
+                </label>
+              </div>
+              <div class="column has-text-centered">
+                <label>
+                  <p class="heading">O/U</p>
+                  <div class="title is-6">{{ game.get('overunder').value }}</div>
+                </label>
+              </div>
+              <div class="column">
+                <label
+                  class="button is-info is-pulled-right"
+                  [for]="game.get('id').value + 'under-winner-radio'"
+                  [ngClass]="{
+                    'is-info': !locked,
+                    'is-static': locked,
+                    'is-outlined': overunderWinner !== 'UNDER'
+                  }"
+                >
+                  <input
+                    [id]="game.get('id').value + 'under-winner-radio'"
+                    type="radio"
+                    formControlName="overunderWinner"
+                    value="UNDER"
+                    name="overunderWinner"
+                  />
+                  Under
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<!-- <div [formGroup]="game" *ngIf="game">
-  <div class="box">
-    <div class="columns">
-      <div class="column is-half">
-        <div>
-          <div>{{ game.get('date').value | date: 'short' }}</div>
-        </div>
-      </div>
-    </div>
-    <div class="columns is-vcentered">
-      <div class="column is-6">
-        <div class="field">
-          <div class="control">
-            <div>{{ game.get('away').value }}</div>
-          </div>
-        </div>
-        <div class="field">
-          <div class="control">
-            <div>{{ game.get('home').value }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="column is-3 has-text-centered">
-        <div class="field">
-          <div class="control">
-            <label
-              class="button"
-              [for]="game.get('id').value + 'line-away-winner-radio'"
-              [ngClass]="
-                lineWinner === 'AWAY' ? 'has-background-primary' : 'has-background-grey-lighter'
-              "
-            >
-              <input
-                [id]="game.get('id').value + 'line-away-winner-radio'"
-                type="radio"
-                formControlName="lineWinner"
-                value="AWAY"
-                name="lineWinner"
-              />
-              {{
-                game
-                  .get('line')
-                  .value.toString()
-                  .charCodeAt(0) === 45
-                  ? '+' +
-                    game
-                      .get('line')
-                      .value.toString()
-                      .slice(1)
-                  : '-' + game.get('line').value
-              }}
-            </label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="control">
-            <label
-              class="button"
-              [for]="game.get('id').value + 'line-home-winner-radio'"
-              [ngClass]="
-                lineWinner === 'HOME' ? 'has-background-primary' : 'has-background-grey-lighter'
-              "
-            >
-              <input
-                [id]="game.get('id').value + 'line-home-winner-radio'"
-                type="radio"
-                formControlName="lineWinner"
-                value="HOME"
-                name="lineWinner"
-              />
-              {{
-                game
-                  .get('line')
-                  .value.toString()
-                  .charCodeAt(0) === 45
-                  ? game.get('line').value
-                  : '+' + game.get('line').value
-              }}
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="column is-3 has-text-centered">
-        <div class="field">
-          <div class="control">
-            <label
-              class="button"
-              [for]="game.get('id').value + 'over-winner-radio'"
-              [ngClass]="
-                overunderWinner === 'OVER'
-                  ? 'has-background-primary'
-                  : 'has-background-grey-lighter'
-              "
-            >
-              <input
-                [id]="game.get('id').value + 'over-winner-radio'"
-                type="radio"
-                formControlName="overunderWinner"
-                value="OVER"
-                name="overunderWinner"
-              />
-              Over {{ game.get('overunder').value }}
-            </label>
-          </div>
-        </div>
-        <div class="field">
-          <div class="control">
-            <label
-              class="button"
-              [for]="game.get('id').value + 'under-winner-radio'"
-              [ngClass]="
-                overunderWinner === 'UNDER'
-                  ? 'has-background-primary'
-                  : 'has-background-grey-lighter'
-              "
-            >
-              <input
-                [id]="game.get('id').value + 'under-winner-radio'"
-                type="radio"
-                formControlName="overunderWinner"
-                value="UNDER"
-                name="overunderWinner"
-              />
-              Under {{ game.get('overunder').value }}
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->

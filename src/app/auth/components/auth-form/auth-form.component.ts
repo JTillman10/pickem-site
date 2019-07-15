@@ -37,6 +37,7 @@ export class AuthFormComponent implements OnInit {
     if (this.isRegistering) {
       this.form.addControl('firstName', new FormControl('', Validators.required));
       this.form.addControl('lastName', new FormControl('', Validators.required));
+      // TODO: add confirm password
     }
   }
 

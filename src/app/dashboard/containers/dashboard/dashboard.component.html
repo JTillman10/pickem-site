@@ -1,8 +1,8 @@
-<div class="columns">
-  <aside class="column is-2 section"><sidebar></sidebar></aside>
-  <div class="column is-10">
-    <div class="section">
-      <form class="container" [formGroup]="form">
+<div class="dashboard">
+  <div class="container">
+    <form [formGroup]="form">
+      <current-week-header [season]="season" [week]="week" [form]="form"></current-week-header>
+      <div class="section">
         <div formArrayName="games" class="columns is-multiline">
           <div
             class="column is-one-third"
@@ -11,7 +11,12 @@
             <pick-card [game]="form.get('games').controls[i]" [form]="form"></pick-card>
           </div>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </div>
+<!-- <div class="columns">
+  <aside class="column is-1 section is-hidden-touch"><sidebar></sidebar></aside>
+  <div class="column">
+  </div>
+</div> -->

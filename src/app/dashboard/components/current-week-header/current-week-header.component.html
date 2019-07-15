@@ -1,0 +1,40 @@
+<div class="section no-padding-bottom">
+  <div class="box" *ngIf="picks$ | async as picks">
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="is-size-4 title">{{ season ? season : 2019 }} - Week {{ week }}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <h1 class="title is-4 is-spaced" [ngClass]="{ 'has-text-green': picks.length === 4 }">
+            {{ picks.length }}/4 picks selected
+          </h1>
+          <h2 class="subtitle is-6">(0 locked in)</h2>
+        </div>
+      </div>
+    </nav>
+    <hr />
+    <nav class="columns">
+      <div class="column has-text-centered">
+        <pick-summary [picks]="picks" [index]="0"></pick-summary>
+      </div>
+      <div class="column has-text-centered">
+        <div>
+          <pick-summary [picks]="picks" [index]="1"></pick-summary>
+        </div>
+      </div>
+      <div class="column has-text-centered">
+        <div>
+          <pick-summary [picks]="picks" [index]="2"></pick-summary>
+        </div>
+      </div>
+      <div class="column has-text-centered">
+        <div>
+          <pick-summary [picks]="picks" [index]="3"></pick-summary>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

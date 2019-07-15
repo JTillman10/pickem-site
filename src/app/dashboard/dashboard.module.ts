@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { PickModule } from '../pick/pick.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CurrentWeekHeaderComponent } from './components/current-week-header/current-week-header.component';
 
 const ROUTES: Routes = [
   {
@@ -21,6 +22,6 @@ const ROUTES: Routes = [
     CoreModule,
     PickModule
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardComponent, CurrentWeekHeaderComponent]
 })
 export class DashboardModule {}

@@ -6,6 +6,8 @@ import { Pick } from '../../../pick/models/pick.model';
 import { Store } from 'store';
 import { first, tap } from 'rxjs/operators';
 import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { LineWinner } from 'src/app/game/models/line-winner.enum';
+import { OverunderWinner } from 'src/app/game/models/overunder-winner.model';
 
 @Component({
   selector: 'dashboard',
@@ -18,39 +20,59 @@ export class DashboardComponent implements OnInit {
     picks: this.fb.array([])
   });
 
+  season: number;
+  week: number;
+
   constructor(private gameService: GameService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    // this.form.get('picks').valueChanges.subscribe(newValue => {
-    //   console.log(newValue);
-    // });
     this.gameService
       .getGamesForCurrentWeek()
       .pipe(
         tap((games: Game[]) => {
+          this.season = games[0].season;
+          this.week = games[0].week;
+
           const gamesControl: FormArray = this.form.get('games') as FormArray;
-          games.forEach((game: Game) =>
-            gamesControl.push(
+          games.forEach((game: Game) => {
+            const disabled = new Date(game.date) < new Date();
+            return gamesControl.push(
               this.fb.group({
                 id: [game.id],
                 home: [game.home],
                 away: [game.away],
                 line: [game.line],
-                lineWinner: [game.lineWinner],
+                lineWinner: [{ value: game.lineWinner, disabled }],
                 overunder: [game.overunder],
-                overunderWinner: [game.overunderWinner],
+                overunderWinner: [{ value: game.overunderWinner, disabled }],
                 week: [game.week],
                 season: [game.season],
                 date: [game.date]
               })
-            )
-          );
+            );
+          });
         })
       )
       .subscribe();
 
-    this.form.get('games').valueChanges.subscribe(newValue => {
-      console.log(newValue);
+    this.form.get('picks').valueChanges.subscribe((newValue: Pick[]) => {
+      // const firstPick: Pick = this.picksArray.at(0).value;
+      // if (newValue.length > 4) {
+      //   this.picksArray.removeAt(0);
+      // }
+      // if (newValue.length > 4 && firstPick.game.id === (this.game.value as Game).id) {
+      //   this.picksArray.removeAt(0);
+      //   if (Object.values(LineWinner).includes(firstPick.selection)) {
+      //     this.game.get('lineWinner').setValue(null);
+      //   }
+      //   if (Object.values(OverunderWinner).includes(firstPick.selection)) {
+      //     this.game.get('overunderWinner').setValue(null);
+      //   }
+      // }
     });
+  }
+
+  get picksArray() {
+    return this.form.get('picks') as FormArray;
   }
 }

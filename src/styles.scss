@@ -1,7 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 html,
 body {
+  font-family: 'Roboto', 'Open Sans', serif;
   margin: 0;
-  background-color: #f0efed;
+  background-color: #f5f7fa;
   min-height: 100vh;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+hr {
+  // border-top-color: #d3d6db;
+  height: 2px;
+  background-color: whitesmoke;
+  margin: 40px 0;
+}
+
+.no-padding-sides {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.no-padding-bottom {
+  padding-bottom: 0;
+}
+
+.has-text-green {
+  color: #27b963;
+}
+
+.input {
+  font-weight: 300;
+}
+
+p {
+  font-weight: 700;
+}
+
+fa-icon {
+  margin-right: 0.5rem;
 }
