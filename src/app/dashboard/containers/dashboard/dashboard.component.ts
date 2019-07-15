@@ -54,25 +54,13 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe();
-
-    this.form.get('picks').valueChanges.subscribe((newValue: Pick[]) => {
-      // const firstPick: Pick = this.picksArray.at(0).value;
-      // if (newValue.length > 4) {
-      //   this.picksArray.removeAt(0);
-      // }
-      // if (newValue.length > 4 && firstPick.game.id === (this.game.value as Game).id) {
-      //   this.picksArray.removeAt(0);
-      //   if (Object.values(LineWinner).includes(firstPick.selection)) {
-      //     this.game.get('lineWinner').setValue(null);
-      //   }
-      //   if (Object.values(OverunderWinner).includes(firstPick.selection)) {
-      //     this.game.get('overunderWinner').setValue(null);
-      //   }
-      // }
-    });
   }
 
-  get picksArray() {
+  get picksArray(): FormArray {
     return this.form.get('picks') as FormArray;
+  }
+
+  get gamesArray(): FormArray {
+    return this.form.get('games') as FormArray;
   }
 }
