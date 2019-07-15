@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   faSignOutAlt = faSignOutAlt;
   faUser = faUser;
+  displayMenu = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
