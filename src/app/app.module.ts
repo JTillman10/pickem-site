@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,7 +12,14 @@ import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
 import { Store } from 'store';
 
 @NgModule({
-  imports: [BrowserModule, HttpClientModule, AppRoutingModule, CoreModule, AuthModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    AppRoutingModule,
+    CoreModule,
+    AuthModule
+  ],
   declarations: [AppComponent],
   providers: [
     Store,

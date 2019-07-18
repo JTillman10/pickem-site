@@ -1,0 +1,13 @@
+<aside *ngFor="let message of messages$ | async" [@fadeInOut]>
+  <div
+    class="notification"
+    [ngClass]="{
+      'is-info': message.style === 'info',
+      'is-danger': message.style === 'danger',
+      'is-success': message.style === 'success'
+    }"
+  >
+    <button class="delete" (click)="removeMessage(message.id)"></button>
+    {{ message.content }}
+  </div>
+</aside>

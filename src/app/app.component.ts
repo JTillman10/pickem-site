@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ToastService } from './core/services/toast.service';
 
 @Component({
   selector: 'root',
@@ -6,7 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'nw-pickem-site';
+  toastNumber = 0;
 
-  constructor() {}
+  constructor(private toastService: ToastService) {}
+
+  createToast() {
+    this.toastNumber += 1;
+    this.toastService.sendMessage(`New Toast - ${this.toastNumber}`, 'success');
+  }
 }

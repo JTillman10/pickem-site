@@ -1,4 +1,8 @@
 <navbar></navbar>
 <!-- <section> -->
-<router-outlet></router-outlet>
+<button (click)="createToast()">Create Toast</button>
+<div class="container">
+  <toasts class="toasts is-overlay"></toasts>
+</div>
+<router-outlet class="router-outlet"></router-outlet>
 <!-- </section> -->
