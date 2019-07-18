@@ -10,6 +10,6 @@ export class GameService {
   constructor(private http: HttpClient) {}
 
   getGamesForCurrentWeek(): Observable<Game[]> {
-    return this.http.get<Game[]>('/games');
+    return this.http.get<Game[]>('/games/current');
   }
 }

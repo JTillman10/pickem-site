@@ -1,24 +1,27 @@
 <div>
-  <p class="heading">Pick {{ index + 1 }}</p>
-  <ng-container *ngIf="pick; else noPick">
-    <p>
-      {{ pickTeam }}
-    </p>
-    <ng-container *ngIf="selectionIsLineWinner; else selectionIsOverUnderWinner">
+  <!-- <p class="heading">Pick {{ index + 1 }}</p> -->
+  <span class="tag is-info rounded">Pick {{ index + 1 }}</span>
+  <div>
+    <ng-container *ngIf="pick; else noPick">
       <p>
-        {{ pick.game.line | line: (pick.selection === 'HOME' ? true : false) }}
+        {{ pickTeam }}
       </p>
-    </ng-container>
-    <ng-template #selectionIsOverUnderWinner>
-      <p>{{ overUnderWinner }} {{ pick.game.overunder }}</p>
-    </ng-template>
+      <ng-container *ngIf="selectionIsLineWinner; else selectionIsOverUnderWinner">
+        <p>
+          {{ pick.game.line | line: (pick.selection === 'HOME' ? true : false) }}
+        </p>
+      </ng-container>
+      <ng-template #selectionIsOverUnderWinner>
+        <p>{{ overUnderWinner }} {{ pick.game.overunder }}</p>
+      </ng-template>
 
-    <!-- <p class="title is-3 has-text-green is-uppercase has-text-weight-bold">Correct!</p> -->
-    <!-- <p class="title is-5 has-text-warning is-uppercase has-text-weight-bold">In progress</p> -->
-  </ng-container>
-  <ng-template #noPick>
-    <p class="title is-5 has-text-danger is-uppercase has-text-weight-bold">
-      No selection yet
-    </p>
-  </ng-template>
+      <!-- <p class="title is-3 has-text-green is-uppercase has-text-weight-bold">Correct!</p> -->
+      <!-- <p class="title is-5 has-text-warning is-uppercase has-text-weight-bold">In progress</p> -->
+    </ng-container>
+    <ng-template #noPick>
+      <p class="title is-5 has-text-danger is-uppercase has-text-weight-bold">
+        No selection yet
+      </p>
+    </ng-template>
+  </div>
 </div>

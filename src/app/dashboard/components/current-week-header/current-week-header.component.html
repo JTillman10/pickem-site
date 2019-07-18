@@ -14,18 +14,42 @@
           <h2 class="subtitle is-6">(0 locked in)</h2>
         </div>
       </div>
+      <div class="level-item">
+        <div class="fullwidth">
+          <div class="level">
+            <div class="level-item">
+              <button
+                class="button is-success is-large"
+                (click)="onSave()"
+                [disabled]="picks.length < 1"
+              >
+                Save
+              </button>
+            </div>
+            <div class="level-item">
+              <button
+                class="button is-danger is-large"
+                (click)="onClear()"
+                [disabled]="picks.length < 1"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </nav>
     <hr />
     <nav class="columns">
-      <div class="column has-text-centered">
+      <div class="column has-text-centered right-border">
         <pick-summary [picks]="picks" [index]="0"></pick-summary>
       </div>
-      <div class="column has-text-centered">
+      <div class="column has-text-centered right-border">
         <div>
           <pick-summary [picks]="picks" [index]="1"></pick-summary>
         </div>
       </div>
-      <div class="column has-text-centered">
+      <div class="column has-text-centered right-border">
         <div>
           <pick-summary [picks]="picks" [index]="2"></pick-summary>
         </div>

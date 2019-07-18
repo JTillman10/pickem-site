@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from '../../../game/services/game.service';
-import { Observable } from 'rxjs';
 import { Game } from '../../../game/models/game.model';
+import { tap } from 'rxjs/operators';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { PickService } from '../../../pick/services/pick.service';
 import { Pick } from '../../../pick/models/pick.model';
-import { Store } from 'store';
-import { first, tap } from 'rxjs/operators';
-import { FormArray, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { LineWinner } from 'src/app/game/models/line-winner.enum';
-import { OverunderWinner } from 'src/app/game/models/overunder-winner.model';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'dashboard',
@@ -20,19 +18,21 @@ export class DashboardComponent implements OnInit {
     picks: this.fb.array([])
   });
 
-  season: number;
-  week: number;
+  season = 2019;
+  week = 1;
 
-  constructor(private gameService: GameService, private fb: FormBuilder) {}
+  constructor(
+    private gameService: GameService,
+    private picksService: PickService,
+    private authService: AuthService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
     this.gameService
       .getGamesForCurrentWeek()
       .pipe(
         tap((games: Game[]) => {
-          this.season = games[0].season;
-          this.week = games[0].week;
-
           const gamesControl: FormArray = this.form.get('games') as FormArray;
           games.forEach((game: Game) => {
             const disabled = new Date(game.date) < new Date();
@@ -54,6 +54,12 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe();
+
+    this.picksService.getPicksForCurrentWeek(this.authService.userId).subscribe((picks: Pick[]) => {
+      picks.forEach((pick: Pick) => {
+        this.picksArray.push(this.fb.group(pick));
+      });
+    });
   }
 
   get picksArray(): FormArray {
@@ -62,5 +68,24 @@ export class DashboardComponent implements OnInit {
 
   get gamesArray(): FormArray {
     return this.form.get('games') as FormArray;
+  }
+
+  savePicks() {
+    if (this.picksArray.valid) {
+      this.picksService
+        .savePicks(this.authService.userId, this.picksArray.value)
+        .subscribe((savedPicks: Pick[]) => {
+          this.clearPicks();
+          savedPicks.forEach((newPick: Pick) => this.picksArray.push(this.fb.group(newPick)));
+        });
+    } else {
+      console.log('invalid form!');
+    }
+  }
+
+  clearPicks() {
+    while (this.picksArray.length > 0) {
+      this.picksArray.removeAt(0);
+    }
   }
 }

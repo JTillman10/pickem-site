@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Pick } from '../../../pick/models/pick.model';
 import { BehaviorSubject } from 'rxjs';
@@ -13,6 +13,9 @@ export class CurrentWeekHeaderComponent implements OnInit {
   @Input() season: number;
   @Input() week: number;
 
+  @Output() save: EventEmitter<any> = new EventEmitter<any>();
+  @Output() clear: EventEmitter<any> = new EventEmitter<any>();
+
   picks$: BehaviorSubject<Pick[]> = new BehaviorSubject<Pick[]>([]);
 
   constructor() {}
@@ -21,5 +24,13 @@ export class CurrentWeekHeaderComponent implements OnInit {
     this.form.get('picks').valueChanges.subscribe((newPicks: Pick[]) => {
       this.picks$.next(newPicks);
     });
+  }
+
+  onClear() {
+    this.clear.emit();
+  }
+
+  onSave() {
+    this.save.emit();
   }
 }

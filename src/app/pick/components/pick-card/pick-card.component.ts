@@ -6,6 +6,7 @@ import { Pick } from '../../models/pick.model';
 import { LineWinner } from 'src/app/game/models/line-winner.enum';
 import { OverunderWinner } from 'src/app/game/models/overunder-winner.model';
 import { AuthService } from 'src/app/auth/services/auth.service';
+import { PickService } from '../../services/pick.service';
 
 @Component({
   selector: 'pick-card',
@@ -18,7 +19,11 @@ export class PickCardComponent implements OnInit {
 
   faLock = faLock;
 
-  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private pickService: PickService
+  ) {}
 
   ngOnInit() {
     this.game.valueChanges.subscribe((newValue: Game) => {
@@ -32,12 +37,12 @@ export class PickCardComponent implements OnInit {
           if (pick.game.id === newValue.id) {
             const selection = pick.selection;
             if (
-              Object.values(LineWinner).includes(selection) &&
+              this.pickService.selectionIsLineWinner(selection) &&
               newValue.lineWinner !== selection
             ) {
               this.picksArray.at(index).patchValue(this.createPick(newValue, newValue.lineWinner));
             } else if (
-              Object.values(OverunderWinner).includes(selection) &&
+              this.pickService.selectionIsOverunderWinner(selection) &&
               newValue.overunderWinner !== selection
             ) {
               this.picksArray
@@ -52,20 +57,23 @@ export class PickCardComponent implements OnInit {
           (pick: Pick) => pick.game.id === newValue.id
         );
         const selection = this.picksArray.at(pickIndex).get('selection').value;
-        if (Object.values(LineWinner).includes(selection) && newValue.lineWinner !== selection) {
+        if (
+          this.pickService.selectionIsLineWinner(selection) &&
+          newValue.lineWinner !== selection
+        ) {
           this.picksArray.at(pickIndex).patchValue(this.createPick(newValue, newValue.lineWinner));
         } else if (
-          Object.values(OverunderWinner).includes(selection) &&
+          this.pickService.selectionIsOverunderWinner(selection) &&
           newValue.overunderWinner !== selection
         ) {
           this.picksArray
             .at(pickIndex)
             .patchValue(this.createPick(newValue, newValue.overunderWinner));
         } else {
-          if (newValue.lineWinner && Object.values(OverunderWinner).includes(selection)) {
+          if (newValue.lineWinner && this.pickService.selectionIsOverunderWinner(selection)) {
             this.pushPick(newValue, newValue.lineWinner);
           }
-          if (newValue.overunderWinner && Object.values(LineWinner).includes(selection)) {
+          if (newValue.overunderWinner && this.pickService.selectionIsLineWinner(selection)) {
             this.pushPick(newValue, newValue.overunderWinner);
           }
         }
@@ -79,13 +87,30 @@ export class PickCardComponent implements OnInit {
         }
       }
     });
+
+    this.form.get('picks').valueChanges.subscribe((newValue: Pick[]) => {
+      if (newValue.length === 0) {
+        this.game.get('lineWinner').setValue(null);
+        this.game.get('overunderWinner').setValue(null);
+      }
+
+      newValue.forEach((pick: Pick) => {
+        const { game, selection } = pick;
+        if (game.id === this.game.get('id').value) {
+          if (this.pickService.selectionIsLineWinner(selection)) {
+            this.game.get('lineWinner').setValue(selection);
+          }
+
+          if (this.pickService.selectionIsOverunderWinner(selection)) {
+            this.game.get('overunderWinner').setValue(selection);
+          }
+        }
+      });
+    });
   }
   pushPick(game: Game, selection: LineWinner | OverunderWinner) {
     if (this.picksArray.length > 3) {
       const firstPick: Pick = this.picksArray.at(0).value;
-      const firstGameIndex: number = this.form
-        .get('games')
-        .value.findIndex((g: Game) => g.id === firstPick.game.id);
       const firstGame: AbstractControl = (this.form.get('games') as FormArray).at(0);
       this.picksArray.removeAt(0);
       if (Object.values(LineWinner).includes(firstPick.selection)) {
@@ -104,7 +129,8 @@ export class PickCardComponent implements OnInit {
     return {
       game: Object.assign({}, game, { lineWinner: null, overunderWinner: null }),
       selection,
-      user: { id: this.authService.userId }
+      user: { id: this.authService.userId },
+      win: null
     };
   }
 

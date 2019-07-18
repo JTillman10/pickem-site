@@ -1,17 +1,25 @@
-<div class="dashboard">
-  <div class="container">
-    <form [formGroup]="form">
-      <current-week-header [season]="season" [week]="week" [form]="form"></current-week-header>
-      <div class="section">
-        <div formArrayName="games" class="columns is-multiline">
-          <div class="column is-one-third" *ngFor="let game of gamesArray.controls; let i = index">
-            <pick-card [game]="gamesArray.at(i)" [form]="form"></pick-card>
-          </div>
+<div class="container">
+  <form [formGroup]="form">
+    <current-week-header
+      [season]="season"
+      [week]="week"
+      [form]="form"
+      (save)="savePicks($event)"
+      (clear)="clearPicks($event)"
+    ></current-week-header>
+    <div class="section">
+      <div formArrayName="games" class="columns is-multiline">
+        <div
+          class="column is-one-third has-text-weight-medium"
+          *ngFor="let game of gamesArray.controls; let i = index"
+        >
+          <pick-card [game]="gamesArray.at(i)" [form]="form"></pick-card>
         </div>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
+
 <!-- <div class="columns">
   <aside class="column is-1 section is-hidden-touch"><sidebar></sidebar></aside>
   <div class="column">
